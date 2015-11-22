@@ -5,6 +5,7 @@
 go get github.com/aggarwalsomya/cmpe273-assignment3/server
 
 cd src/github.com/aggarwalsomya/cmpe273-assignment3/server
+
 go run *
 
 
