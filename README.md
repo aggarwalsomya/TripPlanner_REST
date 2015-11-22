@@ -2,6 +2,7 @@
 
 
 ##Setup
+
 go get github.com/aggarwalsomya/cmpe273-assignment3/server
 
 cd src/github.com/aggarwalsomya/cmpe273-assignment3/server
@@ -15,11 +16,11 @@ go run *
 
 These are the sample location ids which are already created around my residence 
 
-home: 6160
-costco: 5103
-pizza: 4404
-walmart: 8926
-fresh & easy: 6886
+1. home: 6160
+2. costco: 5103
+3. pizza: 4404
+4. walmart: 8926
+5. fresh & easy: 6886
 
 
 ## Planning a trip
@@ -59,7 +60,7 @@ curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
 
-In the subsequenct PUT calls, it will increment the next_desitination_location_id untill it schedules the last uber for home. The status then will be changed to completed. After that, no more PUT calls are allowed and error would be returned. 
+In the subsequenct PUT calls, it will increment the *next_desitination_location_id* untill it schedules the last uber for home. The status then will be changed to *completed*. After that, no more PUT calls are allowed and error would be returned. 
 
 
 
