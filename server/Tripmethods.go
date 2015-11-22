@@ -14,7 +14,7 @@ func CreateTripPlan(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 
 	var req TripServiceReq
-	var res TripServiceData
+	var res ErrorableTripServiceData
 	err = json.Unmarshal(body, &req)
 	if err != nil {
 		var err ErrorMsg
@@ -30,11 +30,9 @@ func CreateTripPlan(w http.ResponseWriter, r *http.Request) {
 	generatePerm(req.Starting_from_location_id, req.Location_ids)
 	//	// use it and then clear again
 	res = bestRouteFinder(ret_g)
-	var res_wrapper UberTripServiceData
-	res_wrapper.IdGlobal = res.Id
-	res_wrapper.TripServiceData = res
-	res_wrapper.Next_destination_location_id = req.Starting_from_location_id
-	res_wrapper.Uber_wait_time_eta = -1
+	res.IdGlobal = res.Id
+	res.Next_destination_location_id = req.Starting_from_location_id
+	res.Uber_wait_time_eta = -1
 
 	ret_g = nil
 
@@ -48,7 +46,7 @@ func CreateTripPlan(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// set in mongo also
-	success := setUberTripData(res_wrapper.Id, res_wrapper)
+	success := setUberTripData(res.Id, res)
 	if !success {
 		var err ErrorMsg
 		fmt.Println("Unable to create an entry for trip data in the database")
@@ -58,14 +56,14 @@ func CreateTripPlan(w http.ResponseWriter, r *http.Request) {
 
 	} else {
 		w.WriteHeader(201)
-		json.NewEncoder(w).Encode(res)
+		json.NewEncoder(w).Encode(res.UberTripServiceData.TripServiceData)
 	}
 }
 
 func GetTripPlan(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	trip_id := vars["trip_id"]
-	var res UberTripServiceData
+	var res ErrorableTripServiceData
 
 	//Get the response from Mongo Db for this Location_Id
 	res = getUberTripData(trip_id)
@@ -80,10 +78,10 @@ func GetTripPlan(w http.ResponseWriter, r *http.Request) {
 
 	//change this res to the response which needs to be sent back
 	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(res.TripServiceData)
+	json.NewEncoder(w).Encode(res.UberTripServiceData.TripServiceData)
 }
 
-func RequestNextRide(w http.ResponseWriter, res UberTripServiceData, startLoc string, endLoc string) {
+func RequestNextRide(w http.ResponseWriter, res ErrorableTripServiceData, startLoc string, endLoc string) {
 	res.Next_destination_location_id = endLoc
 	startLocData := getData(startLoc)
 	if res.ErrorMsg != "" {
@@ -130,7 +128,7 @@ func RequestNextRide(w http.ResponseWriter, res UberTripServiceData, startLoc st
 	}
 
 	res.Uber_wait_time_eta = int(uber_eta)
-
+	
 	//save in mongo db
 	success := updateUberTripData(res.Id, res)
 	if !success {
@@ -142,7 +140,7 @@ func RequestNextRide(w http.ResponseWriter, res UberTripServiceData, startLoc st
 		json.NewEncoder(w).Encode(err)
 	} else {
 		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(res)
+		json.NewEncoder(w).Encode(res.UberTripServiceData)
 	}
 }
 

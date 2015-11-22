@@ -69,7 +69,7 @@ func deleteData(location_id string) bool {
 	return true
 }
 
-func setUberTripData(trip_id string, tripData UberTripServiceData) bool {
+func setUberTripData(trip_id string, tripData ErrorableTripServiceData) bool {
 	session := getSession()
 	defer session.Close()
 	c := session.DB("test1").C("uber_trip_details")
@@ -81,12 +81,12 @@ func setUberTripData(trip_id string, tripData UberTripServiceData) bool {
 	return true
 }
 
-func getUberTripData(trip_id string) UberTripServiceData {
+func getUberTripData(trip_id string) ErrorableTripServiceData {
 	session := getSession()
 	defer session.Close()
 	c := session.DB("test1").C("uber_trip_details")
 
-	result := UberTripServiceData{}
+	result := ErrorableTripServiceData{}
 	fmt.Println("Getting record for : " + trip_id);
 	err := c.Find(bson.M{"_id":trip_id}).One(&result)
     if err != nil {
@@ -96,8 +96,7 @@ func getUberTripData(trip_id string) UberTripServiceData {
 	return result
 }
 
-
-func updateUberTripData(trip_id string , trip UberTripServiceData) bool {
+func updateUberTripData(trip_id string , trip ErrorableTripServiceData) bool {
 	session := getSession()
 	defer session.Close()
 	c := session.DB("test1").C("uber_trip_details")

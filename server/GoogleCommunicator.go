@@ -97,7 +97,7 @@ func getGoogleLocation(Address string) LocationService{
 
 	req, err := http.NewRequest("GET", reqURL , nil)
 	resp, err := client.Do(req)
-
+	
 	var ret LocationService
 	if err != nil {
 		ret.ErrorMsg = "Got error from google service. Might be an invalid address"

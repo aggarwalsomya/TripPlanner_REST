@@ -21,9 +21,9 @@ func clearCache() {
 			locationToUberRespMap = make(map[string]UberEstimatesResponse)
 }
 
-func bestRouteFinder(perm []perms) TripServiceData {
+func bestRouteFinder(perm []perms) ErrorableTripServiceData {
 	clearCache()
-	var tripdata TripServiceData
+	var tripdata ErrorableTripServiceData
 	var finalPath perms			// this will have the final paths
 	var finaluberresp UberEstimatesResponse //this will store the most effective total time, tot duration and tot distance for the final path
 	

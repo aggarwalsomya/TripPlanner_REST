@@ -14,14 +14,13 @@ type LocationService struct {
 		Lat string `json:"lat"`
 		Lng string `json:"lng"`
 	}  `json:"coordinate"`
+	ErrorMsg string	`json:"error"`
 }
-
 
 type TripServiceReq struct {
 	Starting_from_location_id string `json:"starting_from_location_id"`
 	Location_ids []string `json:"location_ids"`
 }
-
 
 type UberEstimatesResponse struct {
 	Price float32
@@ -45,8 +44,15 @@ type TripServiceData struct {
 }
 
 type UberTripServiceData struct {
-	IdGlobal string `json:"id" bson:"_id"`
 	TripServiceData				// anonymous field
 	Next_destination_location_id string `json:"next_destination_location_id"`
 	Uber_wait_time_eta int `json:"uber_wait_time_eta"`
 }
+
+
+type ErrorableTripServiceData struct {
+	UberTripServiceData
+	IdGlobal string `json:"id" bson:"_id"`
+	ErrorMsg string
+}
+
