@@ -174,6 +174,7 @@ func PutTripPlan(w http.ResponseWriter, r *http.Request) {
 	var endLoc string
 
 	if res.Next_destination_location_id == "" {
+		// first put request
 		startLoc = res.Starting_from_location_id
 		endLoc = res.Best_route_location_ids[0]
 		res.Status = "requesting"
@@ -183,6 +184,7 @@ func PutTripPlan(w http.ResponseWriter, r *http.Request) {
 			if res.Best_route_location_ids[i] == res.Next_destination_location_id {
 				startLoc = res.Next_destination_location_id
 				if i == len(res.Best_route_location_ids)-1 {
+					res.Status = "completed"
 					// set home as end point
 					endLoc = res.Starting_from_location_id
 				} else {
