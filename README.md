@@ -50,55 +50,56 @@ curl -v -H "Content-Type: application/json" GET  http://localhost:8080/trips/838
 ## Starting the trip
 
 
-1st Call:
+**1st Call:**
 
 curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
-###Response
+**Response**
 
 {"status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"5103","uber_wait_time_eta":12,"id":"838781"}
 
 
-2nd Call:
+**2nd Call:**
 
 curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
-###Response
+**Response**
 
 {"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"4404","uber_wait_time_eta":12}
 
 
 
-3rd Call:
+**3rd Call:**
 
 curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
-###Response
+**Response**
 
 {"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"8926","uber_wait_time_eta":12}
 
 
 
-4th Call:
+**4th Call:**
 
 curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
-###Response
+**Response**
 
 {"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"6886","uber_wait_time_eta":12}
 
 
 
-5th  Call:
+**5th  Call:**
 
 curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
-###Response
+**Response**
+
 
 {"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"6160","uber_wait_time_eta":12}
 
@@ -106,13 +107,13 @@ curl -v -X  PUT http://localhost:8080/trips/838781/request
 Once the user has reached back to his home, the status  will be changed to *completed*. After that, no more status will be changed. 
 
 
-6th call
+**6th call**
 
 
 curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
-###Response
+**Response**
 
 {"id":"838781","status":"completed","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"","uber_wait_time_eta":0}
 
