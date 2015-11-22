@@ -31,7 +31,7 @@ func CreateTripPlan(w http.ResponseWriter, r *http.Request) {
 	//	// use it and then clear again
 	res = bestRouteFinder(ret_g)
 	res.IdGlobal = res.Id
-	res.Next_destination_location_id = req.Starting_from_location_id
+	res.Next_destination_location_id = ""
 	res.Uber_wait_time_eta = -1
 
 	ret_g = nil
@@ -160,12 +160,12 @@ func PutTripPlan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if res.Status == "completed" {
-		var err ErrorMsg
-
-		err.ErrorMsg = "This trip has already finished."
-		w.WriteHeader(400)
-		json.NewEncoder(w).Encode(err)
+	if res.Status == "completed" || res.Next_destination_location_id == res.Starting_from_location_id {
+		res.Status = "completed"
+		res.Uber_wait_time_eta = 0
+		res.Next_destination_location_id = ""
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode(res.UberTripServiceData)
 		return
 	}
 
@@ -173,20 +173,19 @@ func PutTripPlan(w http.ResponseWriter, r *http.Request) {
 	var startLoc string
 	var endLoc string
 
-	if res.Next_destination_location_id == res.Starting_from_location_id {
+	if res.Next_destination_location_id == "" {
 		startLoc = res.Starting_from_location_id
 		endLoc = res.Best_route_location_ids[0]
 		res.Status = "requesting"
 	} else {
+		res.Status = "requesting"
 		for i := 0; i < len(res.Best_route_location_ids); i++ {
 			if res.Best_route_location_ids[i] == res.Next_destination_location_id {
 				startLoc = res.Next_destination_location_id
 				if i == len(res.Best_route_location_ids)-1 {
 					// set home as end point
-					res.Status = "completed"
 					endLoc = res.Starting_from_location_id
 				} else {
-					res.Status = "requesting"
 					endLoc = res.Best_route_location_ids[i+1]
 				}
 			}
