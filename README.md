@@ -60,7 +60,7 @@ curl -v -X  PUT http://localhost:8080/trips/838781/request
 
 
 
-In the subsequenct PUT calls, it will increment the *next_desitination_location_id* untill it schedules the last uber for home. The status then will be changed to *completed*. After that, no more PUT calls are allowed and error would be returned. 
+In the subsequenct PUT calls, it will increment the *next_desitination_location_id* untill it schedules the last uber for home. The status then will be changed to *completed*. After that, no more status will be changed. 
 
 
 
