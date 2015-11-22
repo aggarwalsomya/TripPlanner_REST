@@ -14,35 +14,35 @@ go run *
 ## How to use
 
 
-These are the sample location ids which are already created around my residence 
+These are the sample location ids which were given in quiz 
 
-1. home: 6160
-2. costco: 5103
-3. pizza: 4404
-4. walmart: 8926
-5. fresh & easy: 6886
+1. Fairmont Hotel San Francisco : 4096
+2. Golden Gate Bridge : 4343
+3. Pier 39 : 7030
+4. Golden Gate Park : 8624
+5. Twin Peaks : 3969
 
 
 ## Planning a trip
 
 This will create a new trip:
 
-curl -v -H "Content-Type: application/json" -X POST -d '{"starting_from_location_id":"6160", "location_ids":["4404", "5103", "6886", "8926"]}' http://localhost:8080/trips
+curl -v -H "Content-Type: application/json" -X POST -d '{"starting_from_location_id":"4096", "location_ids":["4343", "7030", "8624", "3969"]}' http://localhost:8080/trips
 
 ###Response
 
-{"id":"838781","status":"Planning","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13}
+{"id":"878805","status":"planning","starting_from_location_id":"4096","best_route_location_ids":["3969","4343","8624","7030"],"total_uber_costs":68,"total_uber_duration":4649,"total_distance":24.4}
 
 
 
 ## Getting details of the trip
 
-curl -v -H "Content-Type: application/json" GET  http://localhost:8080/trips/838781
+curl -v -H "Content-Type: application/json" GET  http://localhost:8080/trips/878805
 
 
 ###Response
 
-{"id":"838781","status":"Planning","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13}
+{"id":"878805","status":"planning","starting_from_location_id":"4096","best_route_location_ids":["3969","4343","8624","7030"],"total_uber_costs":68,"total_uber_duration":4649,"total_distance":24.4}
 
 
 
@@ -52,69 +52,57 @@ curl -v -H "Content-Type: application/json" GET  http://localhost:8080/trips/838
 
 **1st Call:**
 
-curl -v -X  PUT http://localhost:8080/trips/838781/request
+curl -v -X  PUT http://localhost:8080/trips/878805/request
 
 
 **Response**
 
-{"status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"5103","uber_wait_time_eta":12,"id":"838781"}
+{"id":"878805","status":"requesting","starting_from_location_id":"4096","best_route_location_ids":["3969","4343","8624","7030"],"total_uber_costs":68,"total_uber_duration":4649,"total_distance":24.4,"next_destination_location_id":"3969","uber_wait_time_eta":4}
 
 
 **2nd Call:**
 
-curl -v -X  PUT http://localhost:8080/trips/838781/request
+curl -v -X  PUT http://localhost:8080/trips/878805/request
 
 
 **Response**
 
-{"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"4404","uber_wait_time_eta":12}
+{"id":"878805","status":"requesting","starting_from_location_id":"4096","best_route_location_ids":["3969","4343","8624","7030"],"total_uber_costs":68,"total_uber_duration":4649,"total_distance":24.4,"next_destination_location_id":"4343","uber_wait_time_eta":4}
 
 
 
 **3rd Call:**
 
-curl -v -X  PUT http://localhost:8080/trips/838781/request
+curl -v -X  PUT http://localhost:8080/trips/878805/request
 
 
 **Response**
 
-{"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"8926","uber_wait_time_eta":12}
+{"id":"878805","status":"requesting","starting_from_location_id":"4096","best_route_location_ids":["3969","4343","8624","7030"],"total_uber_costs":68,"total_uber_duration":4649,"total_distance":24.4,"next_destination_location_id":"8624","uber_wait_time_eta":4}
 
 
 
 **4th Call:**
 
-curl -v -X  PUT http://localhost:8080/trips/838781/request
+curl -v -X  PUT http://localhost:8080/trips/878805/request
 
 
 **Response**
 
-{"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"6886","uber_wait_time_eta":12}
+{"id":"878805","status":"requesting","starting_from_location_id":"4096","best_route_location_ids":["3969","4343","8624","7030"],"total_uber_costs":68,"total_uber_duration":4649,"total_distance":24.4,"next_destination_location_id":"7030","uber_wait_time_eta":4}
 
 
 
 **5th  Call:**
 
-curl -v -X  PUT http://localhost:8080/trips/838781/request
+curl -v -X  PUT http://localhost:8080/trips/878805/request
 
 
 **Response**
 
 
-{"id":"838781","status":"requesting","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"6160","uber_wait_time_eta":12}
+{"id":"878805","status":"completed","starting_from_location_id":"4096","best_route_location_ids":["3969","4343","8624","7030"],"total_uber_costs":68,"total_uber_duration":4649,"total_distance":24.4,"next_destination_location_id":"4096","uber_wait_time_eta":4}
 
 
-Once the user has reached back to his home, the status  will be changed to *completed*. After that, no more status will be changed. 
-
-
-**6th call**
-
-
-curl -v -X  PUT http://localhost:8080/trips/838781/request
-
-
-**Response**
-
-{"id":"838781","status":"completed","starting_from_location_id":"6160","best_route_location_ids":["5103","4404","8926","6886"],"total_uber_costs":30,"total_uber_duration":1955,"total_distance":10.13,"next_destination_location_id":"","uber_wait_time_eta":0}
-
+After this, PUT call will not change the status further and trip remain completed. 
 
