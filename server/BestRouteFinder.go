@@ -59,7 +59,7 @@ func bestRouteFinder(perm []perms) ErrorableTripServiceData {
 	//Now when you have the best uber response and best path, generate the Trip response strcuture and return it back.
     rand.Seed(time.Now().Unix())
 	tripdata.Id = strconv.Itoa(rand.Intn(999999 - 1) + 1)
-	tripdata.Status ="Planning"
+	tripdata.Status ="planning"
 	tripdata.Starting_from_location_id = finalPath.perm[0]
 	tripdata.Best_route_location_ids = finalPath.perm[1:len(finalPath.perm) - 1]
 	tripdata.Total_uber_costs = finaluberresp.Price

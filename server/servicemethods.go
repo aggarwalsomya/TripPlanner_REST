@@ -15,7 +15,7 @@ import (
 
 // this will vlaidate the response from google with the req asked by user
 func ValidateResponseWithRequest(res LocationService, req LocationService) bool {
-	return res.Zip == req.Zip
+	return res.Zip == req.Zip || (res.Coordinate.Lat != "" && res.Coordinate.Lng != "")
 }
 
 // kind of stubs
